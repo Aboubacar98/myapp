@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:myapp/pages/AlertePage.dart';
+import 'package:myapp/pages/dep%C3%B4t_page.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -19,10 +21,10 @@ class _HomePageState extends State<HomePage> {
 
   // Liste des widgets pour chaque onglet
   final List<Widget> _pages = [
-    const AccountPage(),   // Page Compte
-    const SavingsPage(),   // Page Épargne
-    const CardsPage(),     // Page Cartes
-    const StatsPage(),     // Page Statistiques
+    const AccountPage(), // Page Compte
+    const SavingsPage(), // Page Épargne
+    const CardsPage(), // Page Cartes
+    const StatsPage(), // Page Statistiques
   ];
 
   @override
@@ -46,11 +48,90 @@ class _HomePageState extends State<HomePage> {
           Row(
             children: [
               IconButton(
-                onPressed: () {},
+                onPressed: () {
+// Suggested code may be subject to a license. Learn more: ~LicenseLog:3008061591.
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => const AlertePage(),
+                    ),
+                  );
+                },
                 icon: const Icon(Icons.notifications),
               ),
               IconButton(
-                onPressed: () {},
+                onPressed: () {
+                  showModalBottomSheet(
+                    context: context,
+                    builder: (BuildContext context) {
+                      return Container(
+                        padding: const EdgeInsets.all(16),
+                        height: 250,
+                        decoration: const BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.only(
+                            topLeft: Radius.circular(15),
+                            topRight: Radius.circular(15),
+                          ),
+                        ),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            const Text(
+                              "Mon Conseiller Financier",
+                              style: TextStyle(
+                                fontSize: 18,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                            const SizedBox(height: 10),
+                            ListTile(
+                              leading: const CircleAvatar(
+                                backgroundColor: Colors.blue,
+                                child: Icon(Icons.phone),
+                              ),
+                              title: const Text(
+                                "Contactez un Conseiller",
+                                style: TextStyle(
+                                  fontSize: 16,
+                                ),
+                              ),
+                              subtitle: const Text("8h à 17h",
+                                  style: TextStyle(
+                                    color: Colors.grey,
+                                    fontSize: 10,
+                                  )),
+                              trailing: const Icon(Icons.chevron_right),
+                              onTap: () {
+                                // Action lors du tap sur la liste
+                              },
+                            ),
+                            const SizedBox(height: 10),
+                            ListTile(
+                              leading: const CircleAvatar(
+                                backgroundColor: Colors.blue,
+                                child: Icon(Icons.chat_bubble_outline),
+                              ),
+                              title: const Text(
+                                "Chatter avec un Conseiller",
+                                style: TextStyle(
+                                  fontSize: 16,
+                                ),
+                              ),
+                              subtitle: const Text("8h à 17h",
+                                  style: TextStyle(
+                                    color: Colors.grey,
+                                    fontSize: 10,
+                                  )),
+                              trailing: const Icon(Icons.chevron_right),
+                              onTap: () {},
+                            ),
+                          ],
+                        ),
+                      );
+                    },
+                  );
+                },
                 icon: const Icon(Icons.chat_bubble_outline),
               ),
             ],
@@ -59,9 +140,11 @@ class _HomePageState extends State<HomePage> {
         backgroundColor: Colors.white,
         elevation: 0,
       ),
-      body: _pages[_selectedIndex], // Change le contenu selon l'onglet sélectionné
+      body: _pages[
+          _selectedIndex], // Change le contenu selon l'onglet sélectionné
       bottomNavigationBar: BottomNavigationBar(
-        type: BottomNavigationBarType.fixed, // Assure que tous les labels s'affichent
+        type: BottomNavigationBarType
+            .fixed, // Assure que tous les labels s'affichent
         items: const <BottomNavigationBarItem>[
           BottomNavigationBarItem(
             icon: Icon(Icons.account_balance),
@@ -82,7 +165,8 @@ class _HomePageState extends State<HomePage> {
         ],
         currentIndex: _selectedIndex, // Index actif
         selectedItemColor: Colors.blue, // Couleur de l'élément sélectionné
-        unselectedItemColor: Colors.grey, // Couleur des éléments non sélectionnés
+        unselectedItemColor:
+            Colors.grey, // Couleur des éléments non sélectionnés
         onTap: _onItemTapped, // Appel à la fonction de changement d'onglet
       ),
     );
@@ -131,7 +215,14 @@ class AccountPage extends StatelessWidget {
                       ),
                     ),
                     ElevatedButton(
-                      onPressed: () {},
+                      onPressed: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => const DepotPage(),
+                          ),
+                        );
+                      },
                       style: ElevatedButton.styleFrom(
                         backgroundColor: Colors.white,
                         foregroundColor: Colors.blue,
