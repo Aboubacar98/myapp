@@ -20,9 +20,15 @@ class CardRequired extends StatelessWidget {
   Widget build(BuildContext context) {
     return Card(
       child: ListTile(
-        leading: icon,
+        leading: icon, 
         title: Text(title),
-        subtitle: Text(subtitle),
+        subtitle: Text(
+          subtitle,
+          style: const TextStyle(
+            color: Colors.grey,
+            fontSize: 10,
+          ),
+        ),
         trailing: GestureDetector(
           onTap: onTrailingPressed,
           child: CircleAvatar(

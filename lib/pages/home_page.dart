@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:myapp/pages/AlertePage.dart';
 import 'package:myapp/pages/dep%C3%B4t_page.dart';
+import 'package:myapp/widgets/ShowAppel.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -103,7 +104,14 @@ class _HomePageState extends State<HomePage> {
                                   )),
                               trailing: const Icon(Icons.chevron_right),
                               onTap: () {
-                                // Action lors du tap sur la liste
+                                Navigator.pop(
+                                    context); // Ferme le premier bottom sheet
+                                showModalBottomSheet(
+                                  context: context,
+                                  builder: (BuildContext context) {
+                                    return const ShowCall(); // Appel du widget ShowCall ici
+                                  },
+                                );
                               },
                             ),
                             const SizedBox(height: 10),

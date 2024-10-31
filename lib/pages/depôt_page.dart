@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:myapp/pages/widgets/card_required.dart';
+import 'package:myapp/pages/debit_page.dart';
+import 'package:myapp/widgets/card_required.dart';
 
 class DepotPage extends StatefulWidget {
   const DepotPage({super.key});
@@ -42,7 +43,12 @@ class _DepotPageState extends State<DepotPage> {
               subtitle: 'Premier dépôt gratuit',
               trailingIcon: Icons.chevron_right,
               onTrailingPressed: () {
-                
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => const DebitPage(),
+                  ),
+                );
               },
             ),
             const SizedBox(
@@ -53,7 +59,14 @@ class _DepotPageState extends State<DepotPage> {
               title: 'Mobile Money',
               subtitle: 'Premier dépôt gratuit',
               trailingIcon: Icons.chevron_right,
-              onTrailingPressed: () {},
+              onTrailingPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => const DebitPage(),
+                  ),
+                );
+              },
             ),
             const SizedBox(
               height: 10,
@@ -61,9 +74,17 @@ class _DepotPageState extends State<DepotPage> {
             CardRequired(
               icon: Image.asset('assets/images/moneygram.png'),
               title: 'Moneygram',
-              subtitle: 'Premier dépôt gratuit',
+              subtitle: 'Premier dépôt gratuit'
+              ,
               trailingIcon: Icons.chevron_right,
-              onTrailingPressed: () {},
+              onTrailingPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => const DebitPage(),
+                  ),
+                );
+              },
             ),
           ],
         ),
