@@ -19,7 +19,7 @@ class _AlertepageState extends State<AlertePage> {
           style: TextStyle(
             color: Colors.black,
             fontSize: 20,
-            fontWeight: FontWeight.bold,
+            fontWeight: FontWeight.bold, 
           ),
         ),
         centerTitle: true,

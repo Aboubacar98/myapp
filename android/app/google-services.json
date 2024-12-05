@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "460069033943",
+    "project_id": "yiguipay",
+    "storage_bucket": "yiguipay.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:460069033943:android:33f9952cc6a144effddd92",
+        "android_client_info": {
+          "package_name": "yiguipay.com"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC_G8kkKB4DwOEzQN6ildT4agQ4abPWpLY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

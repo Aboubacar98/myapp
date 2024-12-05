@@ -1,7 +1,15 @@
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:myapp/firebase_options.dart';
 import 'package:myapp/pages/home_page.dart';
 
-void main() {
+import 'package:myapp/pages/splashscreen.dart';
+
+Future<void> main() async {
+  // Initialize Firebase
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
+  // Run your app
   runApp(const MyApp());
 }
 
@@ -32,8 +40,12 @@ class MyApp extends StatelessWidget {
             fontSize: 18,
           ),
         ),
-      ),
-      home: const HomePage(),
+      ), 
+      initialRoute: '/',
+      routes: {
+        '/': (context) => const SplashScreen(), 
+        '/home': (context) => const HomePage(),
+      },
     );
   }
 }
