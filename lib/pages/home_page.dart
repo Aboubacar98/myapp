@@ -4,7 +4,7 @@ import 'package:myapp/pages/AlertePage.dart';
 import 'package:myapp/pages/CardsPage.dart';
 import 'package:myapp/pages/SavingsPage.dart';
 import 'package:myapp/pages/StatsPage.dart';
-import 'package:myapp/widgets/CustomDrawer.dart';
+import 'package:myapp/pages/CustomDrawer.dart';
 import 'package:myapp/widgets/ShowAppel.dart';
 
 class HomePage extends StatefulWidget {
@@ -23,8 +23,6 @@ class _HomePageState extends State<HomePage> {
       _selectedIndex = index;
     });
   }
-
-  // Liste des widgets pour chaque onglet
   final List<Widget> _pages = [
     const AccountPage(), // Page Compte
     const SavingsPage(), // Page Épargne

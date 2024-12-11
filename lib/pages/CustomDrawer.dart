@@ -3,6 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:myapp/pages/AlertePage.dart';
 import 'package:myapp/widgets/AccountBonus.dart';
+import 'package:myapp/widgets/HelpPage.dart';
 import 'package:myapp/widgets/RelayPoints.dart';
 
 class CustomDrawer extends StatefulWidget {
@@ -125,7 +126,14 @@ class _CustomDrawerState extends State<CustomDrawer> {
                 ListTile(
                   leading: const Icon(Icons.headset_mic, color: Colors.blue),
                   title: const Text('Aide'),
-                  onTap: () {},
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => HelpPage(),
+                      ),
+                    );
+                  },
                 ),
                 ListTile(
                   leading: const Icon(Icons.lock, color: Colors.blue),
