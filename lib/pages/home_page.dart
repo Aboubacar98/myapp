@@ -4,6 +4,7 @@ import 'package:myapp/pages/AlertePage.dart';
 import 'package:myapp/pages/CardsPage.dart';
 import 'package:myapp/pages/SavingsPage.dart';
 import 'package:myapp/pages/StatsPage.dart';
+import 'package:myapp/widgets/CustomDrawer.dart';
 import 'package:myapp/widgets/ShowAppel.dart';
 
 class HomePage extends StatefulWidget {
@@ -34,11 +35,7 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      drawer:const Drawer(
-        child: Column(
-          
-        ),
-      ),
+      drawer: CustomDrawer(),
       appBar: AppBar(
         centerTitle: true,
         title: const Text(
