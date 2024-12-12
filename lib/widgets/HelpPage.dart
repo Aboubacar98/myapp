@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:myapp/models/CategoryButton.dart';
 import 'package:myapp/pages/AllQuestionPage.dart';
 
 class HelpPage extends StatelessWidget {
@@ -49,9 +50,9 @@ class HelpPage extends StatelessWidget {
               ),
               const SizedBox(height: 16),
               ListTile(
-                leading: CircleAvatar(
+                leading: const CircleAvatar(
                   backgroundColor: Colors.blue,
-                  child: const Icon(Icons.call, color: Colors.white),
+                  child: Icon(Icons.call, color: Colors.white),
                 ),
                 title: const Text('Appeler le service client'),
                 trailing: const Icon(Icons.arrow_forward_ios, size: 16),
@@ -60,9 +61,9 @@ class HelpPage extends StatelessWidget {
                 },
               ),
               ListTile(
-                leading: CircleAvatar(
+                leading: const CircleAvatar(
                   backgroundColor: Colors.blue,
-                  child: const Icon(Icons.chat, color: Colors.white),
+                  child: Icon(Icons.chat, color: Colors.white),
                 ),
                 title: const Text('Chatter avec le support'),
                 trailing: const Icon(Icons.arrow_forward_ios, size: 16),
@@ -98,6 +99,42 @@ class HelpPage extends StatelessWidget {
               const SizedBox(height: 16),
               _buildFrequentQuestions(context, limit: 5),
               const SizedBox(height: 24),
+              Container(
+                padding: const EdgeInsets.all(16),
+                decoration: BoxDecoration(
+                  color: Colors.grey[200],
+                  borderRadius: BorderRadius.circular(8),
+                ),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const Text(
+                      "Sélectionner une catégorie",
+                      style: TextStyle(
+                        fontSize: 16,
+                        color: Colors.black,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    const SizedBox(height: 16),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: [
+                        CategoryButton(
+                          icon: Icons.rocket,
+                          label: 'Commencer',
+                          onPressed: () {},
+                        ),
+                        CategoryButton(
+                          icon: Icons.swap_horiz,
+                          label: 'Problèmes de transaction',
+                          onPressed: () {},
+                        ),
+                      ],
+                    )
+                  ],
+                ),
+              )
             ],
           ),
         ),
