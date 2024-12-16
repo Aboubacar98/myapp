@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:myapp/pages/dep%C3%B4t_page.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:myapp/pages/AllTransaction.dart';
+import 'package:myapp/pages/depôt_page.dart';
 import 'package:myapp/widgets/SendMoney.dart';
 
 class AccountPage extends StatelessWidget {
@@ -13,93 +15,185 @@ class AccountPage extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            // Zone de solde rapide
-            Container(
-              height: MediaQuery.of(context).size.height * 0.30,
-              width: double.infinity,
-              decoration: BoxDecoration(
-                color: Colors.blue,
-                borderRadius: BorderRadius.circular(15),
-              ),
-              child: Padding(
-                padding: const EdgeInsets.all(16.0),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: [
-                    const Text(
-                      'Votre solde',
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 20,
-                      ),
-                    ),
-                    const Text(
-                      '15,230.00 GNF',
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 28,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                    ElevatedButton(
-                      onPressed: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => const DepotPage(),
+            // Zone de solde dynamique
+            StreamBuilder<QuerySnapshot>(
+              stream: FirebaseFirestore.instance
+                  .collection('transactions')
+                  .snapshots(),
+              builder: (context, snapshot) {
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  return const Center(child: CircularProgressIndicator());
+                }
+                if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
+                  return const Center(
+                    child: Text('Aucune transaction récente.'),
+                  );
+                }
+
+                final transactions = snapshot.data!.docs;
+
+                // Calcul du solde
+                double balance = 0.0;
+                for (var transaction in transactions) {
+                  final data = transaction.data() as Map<String, dynamic>;
+                  final amount = data['amount'] ?? 0;
+                  final type = data['type'] ?? 'Autre';
+
+                  // Ajouter ou soustraire en fonction du type (Débit ou Crédit)
+                  if (type == 'Crédit') {
+                    balance += amount;
+                  } else if (type == 'Débit') {
+                    balance -= amount;
+                  }
+                }
+
+                return Container(
+                  height: MediaQuery.of(context).size.height * 0.30,
+                  width: double.infinity,
+                  decoration: BoxDecoration(
+                    color: Colors.blue,
+                    borderRadius: BorderRadius.circular(15),
+                  ),
+                  child: Padding(
+                    padding: const EdgeInsets.all(16.0),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: [
+                        const Text(
+                          'Votre solde',
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 20,
                           ),
-                        );
-                      },
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: Colors.white,
-                        foregroundColor: Colors.blue,
-                      ),
-                      child: const Text(
-                        "Ajouter de l'argent",
-                        textAlign: TextAlign.center,
-                      ),
+                        ),
+                        Text(
+                          '${balance.toStringAsFixed(2)} GNF',
+                          style: const TextStyle(
+                            color: Colors.white,
+                            fontSize: 28,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        ElevatedButton(
+                          onPressed: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => const DepotPage(),
+                              ),
+                            );
+                          },
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: Colors.white,
+                            foregroundColor: Colors.blue,
+                          ),
+                          child: const Text(
+                            "Ajouter de l'argent",
+                            textAlign: TextAlign.center,
+                          ),
+                        ),
+                      ],
                     ),
-                  ],
+                  ),
+                );
+              },
+            ),
+            const SizedBox(height: 20),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                const Text(
+                  "Transactions",
+                  style: TextStyle(
+                    fontSize: 18,
+                    fontWeight: FontWeight.bold,
+                  ),
                 ),
+                TextButton(
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => const AllTransactionsPage(),
+                      ),
+                    );
+                  },
+                  child: const Text(
+                    "Voir tout",
+                    style: TextStyle(color: Colors.blue),
+                  ),
+                ),
+              ],
+            ),
+            const SizedBox(height: 10),
+            SizedBox(
+              height: 200,
+              child: StreamBuilder<QuerySnapshot>(
+                stream: FirebaseFirestore.instance
+                    .collection('transactions')
+                    .orderBy('date', descending: true)
+                    .snapshots(),
+                builder: (context, snapshot) {
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    return const Center(child: CircularProgressIndicator());
+                  }
+                  if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
+                    return const Center(
+                      child: Text('Aucune transaction récente.'),
+                    );
+                  }
+
+                  final transactions = snapshot.data!.docs;
+
+                  return ListView.builder(
+                    itemCount: transactions.length,
+                    itemBuilder: (context, index) {
+                      final transaction = transactions[index];
+                      final data = transaction.data() as Map<String, dynamic>;
+
+                      final title = data['title'] ?? 'Dépôt';
+                      final amount = data['amount'] ?? 0;
+                      final date = data['date'] != null
+                          ? (data['date'] as Timestamp).toDate()
+                          : DateTime.now();
+                      final icon = data['icon'] ?? Icons.attach_money.codePoint;
+                      final type = data['type'] ?? 'Autre';
+                      final phoneNumber = data['phoneNumber'] ?? 'Numéro non disponible';
+
+                      IconData iconData;
+                      try {
+                        iconData = IconData(icon, fontFamily: 'MaterialIcons');
+                      } catch (e) {
+                        iconData = Icons.attach_money; // Icône par défaut
+                      }
+
+                      return Card(
+                        color: Colors.white,
+                        child: ListTile(
+                          leading: CircleAvatar(
+                            backgroundColor: Colors.white,
+                            child: Icon(
+                              iconData,
+                              color: type == 'Débit' ? Colors.red : Colors.green,
+                            ),
+                          ),
+                          title: Text(title),
+                          subtitle: Text(
+                            '${amount.toString()} GNF\nNuméro: $phoneNumber\n${date.toLocal()}',
+                            style: const TextStyle(fontSize: 12),
+                          ),
+                          isThreeLine: true,
+                        ),
+                      );
+                    },
+                  );
+                },
               ),
             ),
             const SizedBox(height: 20),
-            // Transactions récentes
-            const Text(
-              "Transactions récentes",
-              style: TextStyle(
-                fontSize: 18,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-            Container(
-              height: 200, // Définir une hauteur pour la liste
-              child: ListView(
-                shrinkWrap: true,
-                physics: const NeverScrollableScrollPhysics(),
-                children: const [
-                  Card(
-                    child: ListTile(
-                      leading: Icon(Icons.account_balance_wallet),
-                      title: Text('Transfert reçu'),
-                      subtitle: Text('2 500 GNF'),
-                      trailing: Text('12 Oct, 2024'),
-                    ),
-                  ),
-                  Card(
-                    child: ListTile(
-                      leading: Icon(Icons.shopping_bag),
-                      title: Text('Achat en ligne'),
-                      subtitle: Text('5 000 GNF'),
-                      trailing: Text('10 Oct, 2024'),
-                    ),
-                  ),
-                  // Ajoutez d'autres transactions ici
-                ],
-              ),
-            ),
-            const SizedBox(height: 5),
+
+            // Opérations
             const Text(
               "Opérations",
               style: TextStyle(
@@ -125,14 +219,12 @@ class AccountPage extends StatelessWidget {
                     );
                   },
                   child: _buildActionButton(
-                      "Transfert d'argent", Icons.swap_horiz, Colors.orange),
+                      "Transfert d'argent", Icons.swap_horiz, Colors.blue),
                 ),
                 InkWell(
                   onTap: () {},
-                  child: _buildActionButton(
-                      'Recharger mon compte',
-                      Icons.add_circle_outline_sharp,
-                      const Color.fromARGB(255, 83, 76, 175)),
+                  child: _buildActionButton('Recharger mon compte',
+                      Icons.add_circle_outline_sharp, Colors.blue),
                 ),
                 InkWell(
                   onTap: () {},
@@ -142,7 +234,7 @@ class AccountPage extends StatelessWidget {
                 InkWell(
                   onTap: () {},
                   child: _buildActionButton(
-                      'Factures', Icons.receipt_long, Colors.purple),
+                      'Factures', Icons.receipt_long, Colors.blue),
                 ),
                 InkWell(
                   onTap: () {},
@@ -152,7 +244,7 @@ class AccountPage extends StatelessWidget {
                 InkWell(
                   onTap: () {},
                   child: _buildActionButton("Retrait d'argent",
-                      Icons.shape_line_outlined, Colors.red),
+                      Icons.shape_line_outlined, Colors.blue),
                 ),
               ],
             ),

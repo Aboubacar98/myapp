@@ -8,8 +8,7 @@ class AlertePage extends StatefulWidget {
 }
 
 class _AlertepageState extends State<AlertePage> {
-
-  bool hasNotifications = false;  
+  bool hasNotifications = false;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -19,7 +18,7 @@ class _AlertepageState extends State<AlertePage> {
           style: TextStyle(
             color: Colors.black,
             fontSize: 20,
-            fontWeight: FontWeight.bold, 
+            fontWeight: FontWeight.bold,
           ),
         ),
         centerTitle: true,
@@ -29,11 +28,11 @@ class _AlertepageState extends State<AlertePage> {
       body: Center(
         child: hasNotifications
             ? const Text(
-                "Vous avez des notifications",  // Affiché si des notifications sont présentes
+                "Vous avez des notifications", // Affiché si des notifications sont présentes
                 style: TextStyle(fontSize: 18),
               )
             : const Text(
-                "Vous n'avez aucune notification",  // Affiché si aucune notification
+                "Vous n'avez aucune notification", // Affiché si aucune notification
                 style: TextStyle(fontSize: 18, color: Colors.grey),
               ),
       ),

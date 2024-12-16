@@ -46,7 +46,9 @@ class _DepotPageState extends State<DepotPage> {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => const DebitPage(),
+                    builder: (context) => const DebitPage(
+                      subtitle: 'Orange Money différent du mien',
+                    ),
                   ),
                 );
               },
@@ -63,7 +65,9 @@ class _DepotPageState extends State<DepotPage> {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => const DebitPage(),
+                    builder: (context) => const DebitPage(
+                      subtitle: 'MTN MoMo différent du mien',
+                    ),
                   ),
                 );
               },
@@ -74,14 +78,15 @@ class _DepotPageState extends State<DepotPage> {
             CardRequired(
               icon: Image.asset('assets/images/moneygram.png'),
               title: 'Moneygram',
-              subtitle: 'Premier dépôt gratuit'
-              ,
+              subtitle: 'Premier dépôt gratuit',
               trailingIcon: Icons.chevron_right,
               onTrailingPressed: () {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => const DebitPage(),
+                    builder: (context) => const DebitPage(
+                      subtitle: 'Moneygram différent du mien',
+                    ),
                   ),
                 );
               },

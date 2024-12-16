@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:myapp/pages/AccountPage.dart';
+import 'package:myapp/pages/home_page.dart';
 
 class DebitNumberPage extends StatefulWidget {
-  final String phoneNumber; // Numéro transmis depuis DebitPage
+  final String phoneNumber;
 
-  const DebitNumberPage({Key? key, required this.phoneNumber})
-      : super(key: key);
+  const DebitNumberPage({Key? key, required this.phoneNumber}) : super(key: key);
 
   @override
   _DebitNumberPageState createState() => _DebitNumberPageState();
@@ -13,9 +15,62 @@ class DebitNumberPage extends StatefulWidget {
 
 class _DebitNumberPageState extends State<DebitNumberPage> {
   final TextEditingController amountController = TextEditingController();
-  bool showCustomKeyboard = false; // Contrôle l'affichage du pavé numérique
+  bool showCustomKeyboard = false;
 
-  // Méthode pour afficher le pavé numérique personnalisé
+  // Méthode pour sauvegarder une transaction dans Firestore
+// Méthode pour sauvegarder une transaction dans Firestore
+// Méthode pour sauvegarder une transaction dans Firestore
+Future<void> _saveTransaction(double amount, String type) async {
+  final transaction = {
+    "amount": amount,
+    "type": type,  // "Débit" ou "Crédit" selon le type de transaction
+    "phoneNumber": widget.phoneNumber,
+    "date": DateTime.now(),
+  };
+
+  try {
+    final userDoc = FirebaseFirestore.instance.collection('users').doc(widget.phoneNumber);
+    final mainTransactionCollection = FirebaseFirestore.instance.collection('transactions'); // Collection principale des transactions
+
+    // Récupérer le solde actuel
+    final snapshot = await userDoc.get();
+
+    if (!snapshot.exists) {
+      // Si l'utilisateur n'existe pas, créer un nouveau document avec un solde initial
+      await userDoc.set({
+        "balance": amount,
+      });
+    } else {
+      final currentBalance = snapshot.data()?['balance'] ?? 0.0;
+      final newBalance = currentBalance + (type == "Débit" ? -amount : amount); // Calcul du solde en fonction du type de transaction
+
+      // Mettre à jour le solde
+      await userDoc.update({"balance": newBalance});
+    }
+
+    // Ajouter la transaction uniquement à la collection principale "transactions"
+    await mainTransactionCollection.add(transaction);
+
+    // Afficher un message de succès
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(content: Text('Transaction effectuée avec succès !')),
+    );
+
+    // Attendre 2 secondes avant de rediriger
+    await Future.delayed(const Duration(seconds: 2));
+
+    Navigator.pushReplacement(
+      context,
+      MaterialPageRoute(builder: (context) => const HomePage()),
+    );
+  } catch (e) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(content: Text('Erreur lors de l\'enregistrement : $e')),
+    );
+  }
+}
+
+
   Widget _buildCustomKeyboard() {
     final keys = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '.', '0', '⌫'];
 
@@ -39,7 +94,6 @@ class _DebitNumberPageState extends State<DebitNumberPage> {
                       .substring(0, amountController.text.length - 1);
                 }
               } else if (key == '.' && amountController.text.contains('.')) {
-                // Ne pas autoriser plusieurs points décimaux
                 return;
               } else {
                 amountController.text += key;
@@ -70,8 +124,8 @@ class _DebitNumberPageState extends State<DebitNumberPage> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Image.asset(
-              'assets/images/Orange-Money-logo.png', // Chemin vers le logo
-              height: 40, // Taille du logo
+              'assets/images/Orange-Money-logo.png',
+              height: 40,
             ),
           ],
         ),
@@ -86,12 +140,9 @@ class _DebitNumberPageState extends State<DebitNumberPage> {
           padding: const EdgeInsets.all(16.0),
           child: Column(
             children: [
-              // Texte pour le numéro à débiter
               const Text(
                 'Numéro à débiter',
-                style: TextStyle(
-                  fontSize: 10,
-                ),
+                style: TextStyle(fontSize: 10),
               ),
               const SizedBox(height: 2),
               Text(
@@ -102,20 +153,16 @@ class _DebitNumberPageState extends State<DebitNumberPage> {
                 ),
               ),
               const SizedBox(height: 20),
-
-              // Champ de saisie pour le montant avec pavé numérique personnalisé
               GestureDetector(
                 onTap: () {
                   setState(() {
-                    showCustomKeyboard = true; // Affiche le pavé numérique
+                    showCustomKeyboard = true;
                   });
                 },
                 child: AbsorbPointer(
-                  // Empêche l'affichage du clavier natif
                   child: TextField(
                     controller: amountController,
-                    keyboardType:
-                        TextInputType.none, // Désactive le clavier natif
+                    keyboardType: TextInputType.none,
                     textAlign: TextAlign.center,
                     style: const TextStyle(
                       fontSize: 24,
@@ -140,28 +187,19 @@ class _DebitNumberPageState extends State<DebitNumberPage> {
                 ),
               ),
               const SizedBox(height: 20),
-
-              // Frais opérateur et montant à recevoir (visible même si le clavier est activé)
               Container(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+                padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
                 decoration: BoxDecoration(
                   color: Colors.grey.shade100,
                   borderRadius: BorderRadius.circular(12),
                 ),
-                child: Column(
-                  children: const [
+                child: const Column(
+                  children: [
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Text(
-                          'Frais opérateur',
-                          style: TextStyle(fontSize: 16),
-                        ),
-                        Text(
-                          '-',
-                          style: TextStyle(fontSize: 16),
-                        ),
+                        Text('Frais opérateur', style: TextStyle(fontSize: 16)),
+                        Text('-', style: TextStyle(fontSize: 16)),
                       ],
                     ),
                     Divider(),
@@ -189,11 +227,10 @@ class _DebitNumberPageState extends State<DebitNumberPage> {
                 ),
               ),
               const SizedBox(height: 30),
-
-              // Bouton Confirmer
               ElevatedButton(
-                onPressed: () {
+                onPressed: () async {
                   final amount = amountController.text.trim();
+
                   if (amount.isEmpty) {
                     ScaffoldMessenger.of(context).showSnackBar(
                       const SnackBar(
@@ -203,8 +240,18 @@ class _DebitNumberPageState extends State<DebitNumberPage> {
                     return;
                   }
 
-                  // Logique pour confirmer le montant
-                  print('Montant confirmé : $amount');
+                  final amountValue = double.tryParse(amount);
+                  if (amountValue == null || amountValue <= 0) {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(
+                        content: Text('Veuillez entrer un montant valide'),
+                      ),
+                    );
+                    return;
+                  }
+
+                  // Enregistrer la transaction
+                  await _saveTransaction(amountValue, "Crédit");
                 },
                 style: ElevatedButton.styleFrom(
                   backgroundColor: Colors.blue,
@@ -218,10 +265,7 @@ class _DebitNumberPageState extends State<DebitNumberPage> {
                   style: TextStyle(fontSize: 18),
                 ),
               ),
-
               const SizedBox(height: 20),
-
-              // Pavé numérique personnalisé
               if (showCustomKeyboard)
                 Padding(
                   padding: const EdgeInsets.only(top: 20),

@@ -36,12 +36,13 @@ class Authentification {
           password: password,
         );
 
-        // Add user to Firestore
+        // Add user to Firestore with initial balance
         await _firestore.collection("users").doc(cred.user!.uid).set({
           'name': name,
           'id': cred.user!.uid,
           'email': email,
           'phone': phone, // Add phone number to Firestore
+          'balance': 0.0, // Initial balance
         });
 
         // Emitting success status
@@ -71,6 +72,31 @@ class Authentification {
           email: email,
           password: password,
         );
+
+        // Vérifier si l'utilisateur a un solde, sinon l'ajouter avec une valeur de 0.0
+        User? user = _auth.currentUser;
+        if (user != null) {
+          DocumentSnapshot userDoc =
+              await _firestore.collection("users").doc(user.uid).get();
+
+          if (userDoc.exists) {
+            // Vérifier si le champ 'balance' existe dans les données du document
+            Map<String, dynamic>? data =
+                userDoc.data() as Map<String, dynamic>?;
+            if (data != null && !data.containsKey('balance')) {
+              // Si le champ 'balance' n'existe pas, l'ajouter
+              await _firestore.collection("users").doc(user.uid).update({
+                'balance': 0.0, // Initial balance
+              });
+            }
+          } else {
+            // Si le document n'existe pas, on peut éventuellement créer un document
+            await _firestore.collection("users").doc(user.uid).set({
+              'balance': 0.0, // Initial balance
+            });
+          }
+        }
+
         res = "success";
       } else {
         res = "Please enter all the fields";
