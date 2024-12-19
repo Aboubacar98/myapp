@@ -79,7 +79,10 @@ class _TransfertOrangePageState extends State<TransfertOrangePage> {
     showDialog(
       context: context,
       builder: (BuildContext context) {
-        return ShowPinDialog(); // Assurez-vous que ShowPinDialog est un widget valide
+        return ShowPinDialog(
+          phoneNumber: _phoneController.text,
+          amount: _amountController.text,
+        ); // Assurez-vous que ShowPinDialog est un widget valide
       },
     );
   }
