@@ -81,7 +81,8 @@ class _TransfertOrangePageState extends State<TransfertOrangePage> {
       builder: (BuildContext context) {
         return ShowPinDialog(
           phoneNumber: _phoneController.text,
-          amount: _amountController.text,
+          amount: _amountController.text, transactionType: 'Débit',
+          
         ); // Assurez-vous que ShowPinDialog est un widget valide
       },
     );
@@ -202,7 +203,7 @@ class _TransfertOrangePageState extends State<TransfertOrangePage> {
                       backgroundColor: Colors.blue,
                       foregroundColor: Colors.white,
                     ),
-                    child: Row(
+                    child: const Row(
                       children: [
                         Text("Valider"),
                         Icon(Icons.arrow_forward),
@@ -211,12 +212,12 @@ class _TransfertOrangePageState extends State<TransfertOrangePage> {
                   ),
                 ],
               ),
-              SizedBox(height: 16),
+              const SizedBox(height: 16),
               // Clavier numérique
               GridView.builder(
                 shrinkWrap: true,
-                physics: NeverScrollableScrollPhysics(),
-                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                physics: const NeverScrollableScrollPhysics(),
+                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                   crossAxisCount: 3,
                   childAspectRatio: 2,
                 ),

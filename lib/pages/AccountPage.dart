@@ -154,7 +154,6 @@ class AccountPage extends StatelessWidget {
                       final transaction = transactions[index];
                       final data = transaction.data() as Map<String, dynamic>;
 
-                      final title = data['title'] ?? 'Dépôt';
                       final amount = (data['amount'] is num)
                           ? data['amount'] as num
                           : double.tryParse(data['amount'].toString()) ?? 0.0;
@@ -162,9 +161,12 @@ class AccountPage extends StatelessWidget {
                           ? (data['date'] as Timestamp).toDate()
                           : DateTime.now();
                       final icon = data['icon'] ?? Icons.attach_money.codePoint;
-                      final type = data['type'] ?? 'Autre';
+                      final type = data['type'] ?? 'Autre'; // "Débit" ou "Crédit"
                       final phoneNumber =
                           data['phoneNumber'] ?? 'Numéro non disponible';
+
+                      // Déterminer le titre en fonction du type de transaction
+                      final title = type == 'Débit' ? 'Débit' : 'Crédit'; // Titre dynamique
 
                       IconData iconData;
                       try {
@@ -184,7 +186,7 @@ class AccountPage extends StatelessWidget {
                               color: type == 'Débit' ? Colors.red : Colors.green,
                             ),
                           ),
-                          title: Text(title),
+                          title: Text(title), // Affiche "Débit" ou "Crédit" ici
                           subtitle: Text(
                             '${amount.toString()} GNF\nNuméro: $phoneNumber\n${date.toLocal()}',
                             style: const TextStyle(fontSize: 12),
