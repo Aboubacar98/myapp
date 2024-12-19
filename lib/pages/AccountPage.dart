@@ -36,7 +36,9 @@ class AccountPage extends StatelessWidget {
                 double balance = 0.0;
                 for (var transaction in transactions) {
                   final data = transaction.data() as Map<String, dynamic>;
-                  final amount = data['amount'] ?? 0;
+                  final amount = (data['amount'] is num)
+                      ? data['amount'] as num
+                      : double.tryParse(data['amount'].toString()) ?? 0.0;
                   final type = data['type'] ?? 'Autre';
 
                   // Ajouter ou soustraire en fonction du type (Débit ou Crédit)
@@ -153,17 +155,21 @@ class AccountPage extends StatelessWidget {
                       final data = transaction.data() as Map<String, dynamic>;
 
                       final title = data['title'] ?? 'Dépôt';
-                      final amount = data['amount'] ?? 0;
+                      final amount = (data['amount'] is num)
+                          ? data['amount'] as num
+                          : double.tryParse(data['amount'].toString()) ?? 0.0;
                       final date = data['date'] != null
                           ? (data['date'] as Timestamp).toDate()
                           : DateTime.now();
                       final icon = data['icon'] ?? Icons.attach_money.codePoint;
                       final type = data['type'] ?? 'Autre';
-                      final phoneNumber = data['phoneNumber'] ?? 'Numéro non disponible';
+                      final phoneNumber =
+                          data['phoneNumber'] ?? 'Numéro non disponible';
 
                       IconData iconData;
                       try {
-                        iconData = IconData(icon, fontFamily: 'MaterialIcons');
+                        iconData =
+                            IconData(icon, fontFamily: 'MaterialIcons');
                       } catch (e) {
                         iconData = Icons.attach_money; // Icône par défaut
                       }

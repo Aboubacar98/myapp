@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:myapp/pages/debit_page.dart';
+import 'package:myapp/pages/credit_page.dart';
 import 'package:myapp/widgets/card_required.dart';
 
 class DepotPage extends StatefulWidget {
@@ -46,7 +46,7 @@ class _DepotPageState extends State<DepotPage> {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => const DebitPage(
+                    builder: (context) => const CreditPage(
                       subtitle: 'Orange Money différent du mien',
                     ),
                   ),
@@ -65,7 +65,7 @@ class _DepotPageState extends State<DepotPage> {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => const DebitPage(
+                    builder: (context) => const CreditPage(
                       subtitle: 'MTN MoMo différent du mien',
                     ),
                   ),
@@ -84,7 +84,7 @@ class _DepotPageState extends State<DepotPage> {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => const DebitPage(
+                    builder: (context) => const CreditPage(
                       subtitle: 'Moneygram différent du mien',
                     ),
                   ),

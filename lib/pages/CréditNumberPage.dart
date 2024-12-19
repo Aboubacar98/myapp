@@ -4,16 +4,16 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:myapp/pages/AccountPage.dart';
 import 'package:myapp/pages/home_page.dart';
 
-class DebitNumberPage extends StatefulWidget {
+class CreditNumberPage extends StatefulWidget {
   final String phoneNumber;
 
-  const DebitNumberPage({Key? key, required this.phoneNumber}) : super(key: key);
+  const CreditNumberPage({Key? key, required this.phoneNumber}) : super(key: key);
 
   @override
-  _DebitNumberPageState createState() => _DebitNumberPageState();
+  _CreditNumberPageState createState() => _CreditNumberPageState();
 }
 
-class _DebitNumberPageState extends State<DebitNumberPage> {
+class _CreditNumberPageState extends State<CreditNumberPage> {
   final TextEditingController amountController = TextEditingController();
   bool showCustomKeyboard = false;
 

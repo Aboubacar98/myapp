@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:myapp/pages/TransfertOrangePage.dart';
 import 'package:myapp/widgets/card_required.dart';
 import 'package:myapp/widgets/receive.dart';
 
@@ -50,7 +51,7 @@ class _SendmoneyState extends State<Sendmoney> {
                 Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => const Receiver(),
+                      builder: (context) => TransfertOrangePage(),
                     ));
               },
             ),
@@ -83,7 +84,7 @@ class _SendmoneyState extends State<Sendmoney> {
               },
             ),
           ],
-        ), 
+        ),
       ),
     );
   }
