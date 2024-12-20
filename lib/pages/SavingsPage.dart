@@ -42,9 +42,9 @@ class SavingsPage extends StatelessWidget {
               actions: [
                 ElevatedButton(
                   onPressed: () {
-                     Navigator.pushReplacement(
+                    Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (context) => BoxPage()), // Remplacez NouvellePage() par la page cible
+                      MaterialPageRoute(builder: (context) => const BoxPage()),
                     );
                   },
                   style: ElevatedButton.styleFrom(
