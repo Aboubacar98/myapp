@@ -3,12 +3,12 @@ import 'package:flutter/services.dart';
 import 'package:myapp/widgets/ShowAppel.dart';
 import 'package:myapp/widgets/ShowPinDialog.dart';
 
-class TransfertOrangePage extends StatefulWidget {
+class TransfertMoneyGram extends StatefulWidget {
   @override
-  _TransfertOrangePageState createState() => _TransfertOrangePageState();
+  _TransfertMoneyGramState createState() => _TransfertMoneyGramState();
 }
 
-class _TransfertOrangePageState extends State<TransfertOrangePage> {
+class _TransfertMoneyGramState extends State<TransfertMoneyGram> {
   final TextEditingController _phoneController = TextEditingController();
   final TextEditingController _amountController = TextEditingController();
   bool isPhoneValid = false;
@@ -96,7 +96,7 @@ class _TransfertOrangePageState extends State<TransfertOrangePage> {
         backgroundColor: Colors.white,
         elevation: 0,
         title: const Text(
-          "Transfert vers Orange Money",
+          "Transfert vers MoneyGram",
           style: TextStyle(color: Colors.black, fontSize: 16),
         ),
         centerTitle: true,
@@ -104,7 +104,7 @@ class _TransfertOrangePageState extends State<TransfertOrangePage> {
           Padding(
             padding: EdgeInsets.only(right: 16),
             child: Image.asset(
-              'assets/images/Orange-Money-logo.png',
+              'assets/images/moneygram.png',
               width: 40,
               height: 40,
             ),

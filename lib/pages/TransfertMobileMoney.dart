@@ -3,12 +3,12 @@ import 'package:flutter/services.dart';
 import 'package:myapp/widgets/ShowAppel.dart';
 import 'package:myapp/widgets/ShowPinDialog.dart';
 
-class TransfertOrangePage extends StatefulWidget {
+class TransfertMobileMoney extends StatefulWidget {
   @override
-  _TransfertOrangePageState createState() => _TransfertOrangePageState();
+  _TransfertMobileMoneyState createState() => _TransfertMobileMoneyState();
 }
 
-class _TransfertOrangePageState extends State<TransfertOrangePage> {
+class _TransfertMobileMoneyState extends State<TransfertMobileMoney> {
   final TextEditingController _phoneController = TextEditingController();
   final TextEditingController _amountController = TextEditingController();
   bool isPhoneValid = false;
@@ -81,8 +81,8 @@ class _TransfertOrangePageState extends State<TransfertOrangePage> {
       builder: (BuildContext context) {
         return ShowPinDialog(
           phoneNumber: _phoneController.text,
-          amount: _amountController.text,
-          transactionType: 'Débit',
+          amount: _amountController.text, transactionType: 'Débit',
+          
         ); // Assurez-vous que ShowPinDialog est un widget valide
       },
     );
@@ -96,7 +96,7 @@ class _TransfertOrangePageState extends State<TransfertOrangePage> {
         backgroundColor: Colors.white,
         elevation: 0,
         title: const Text(
-          "Transfert vers Orange Money",
+          "Transfert vers Mobile Money",
           style: TextStyle(color: Colors.black, fontSize: 16),
         ),
         centerTitle: true,
@@ -104,7 +104,7 @@ class _TransfertOrangePageState extends State<TransfertOrangePage> {
           Padding(
             padding: EdgeInsets.only(right: 16),
             child: Image.asset(
-              'assets/images/Orange-Money-logo.png',
+              'assets/images/mobile-money.png',
               width: 40,
               height: 40,
             ),

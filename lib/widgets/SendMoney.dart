@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:myapp/pages/TransfertMobileMoney.dart';
+import 'package:myapp/pages/TransfertMoneyGramPage.dart';
 import 'package:myapp/pages/TransfertOrangePage.dart';
 import 'package:myapp/widgets/card_required.dart';
 import 'package:myapp/widgets/receive.dart';
@@ -64,7 +66,7 @@ class _SendmoneyState extends State<Sendmoney> {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => const Receiver(),
+                    builder: (context) => TransfertMobileMoney(),
                   ),
                 );
               },
@@ -78,7 +80,7 @@ class _SendmoneyState extends State<Sendmoney> {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => const Receiver(),
+                    builder: (context) =>  TransfertMoneyGram(),
                   ),
                 );
               },
